@@ -3,7 +3,6 @@
 
 <jsp:useBean id="product" type="com.es.phoneshop.model.Product" scope="request"/>
 <table>
-    <c:set var="product" value="${product}">
     <thead>
     <tr>
         <td>Id</td>
@@ -29,6 +28,5 @@
         <td>Stock</td>
         <td>${product.stock}</td>
     </tr>
-    </c:set>
     </thead>
 </table>

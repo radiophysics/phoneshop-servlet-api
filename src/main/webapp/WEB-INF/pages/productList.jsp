@@ -20,7 +20,10 @@
         <tr>
             <td>${product.id}</td>
             <td>
-                <a href="${pageContext.servletContext.contextPath}/products/${product.id}">${product.code}</a>
+                <c:url var="productUrl" value="/products/${product.id}">
+                    <c:param name="blue">cool</c:param>
+                </c:url>
+                <a href="${productUrl}">${product.code}</a>
             </td>
             <td>${product.description}</td>
             <td>${product.price}</td>

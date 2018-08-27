@@ -12,14 +12,13 @@ import java.util.Currency;
 import java.util.Locale;
 
 public class SampleDataServletContextListener implements ServletContextListener {
+    private ProductDao productDao = ArrayListProductDao.getInstance();
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         String insertSampleDataString = sce.getServletContext().getInitParameter("insertSampleData");
         if (!Boolean.valueOf(insertSampleDataString))
             return;
-
-        ProductDao productDao = ArrayListProductDao.getInstance();
 
         productDao.save(new Product(1L, "a000", "first (null) product",
                 null, Currency.getInstance(Locale.US), 0));

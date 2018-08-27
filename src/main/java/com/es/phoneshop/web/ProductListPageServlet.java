@@ -10,11 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class ProductListPageServlet extends HttpServlet {
+    private ProductDao productDao = ArrayListProductDao.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ProductDao productDao;
-        productDao = ArrayListProductDao.getInstance();
 
         try {
             request.setAttribute("products", productDao.findProducts());

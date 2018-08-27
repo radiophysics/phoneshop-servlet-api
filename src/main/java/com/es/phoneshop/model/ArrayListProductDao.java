@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 public class ArrayListProductDao implements ProductDao {
 
     private static volatile ArrayListProductDao instance;
-    private List<Product> products;
+    private List<Product> products = new ArrayList<>();
 
     public static ArrayListProductDao getInstance() {
         if (instance == null){
@@ -21,11 +21,18 @@ public class ArrayListProductDao implements ProductDao {
     }
 
     private ArrayListProductDao() {
-        products = new ArrayList<>();
     }
 
     public synchronized void save(Product product) {
-        products.add(product);
+        try {
+            if (products.contains(getInstance().getProduct(product.getId()))) {
+                getInstance().remove(product.getId());
+            }
+        } catch (IllegalArgumentException e){
+
+        } finally {
+            products.add(product);
+        }
     }
 
     public synchronized Product getProduct(long id) {
