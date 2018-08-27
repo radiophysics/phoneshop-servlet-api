@@ -24,15 +24,8 @@ public class ArrayListProductDao implements ProductDao {
     }
 
     public synchronized void save(Product product) {
-        try {
-            if (products.contains(getInstance().getProduct(product.getId()))) {
-                getInstance().remove(product.getId());
-            }
-        } catch (IllegalArgumentException e){
-
-        } finally {
-            products.add(product);
-        }
+        products.remove(product);
+        products.add(product);
     }
 
     public synchronized Product getProduct(long id) {
