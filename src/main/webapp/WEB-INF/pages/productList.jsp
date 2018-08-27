@@ -20,7 +20,7 @@
         <tr>
             <td>${product.id}</td>
             <td>
-                <a href="/${pageContext.servletContext.contextPath}/products/${product.id}">${product.code}</a>
+                <a href="${pageContext.servletContext.contextPath}/products/${product.id}">${product.code}</a>
             </td>
             <td>${product.description}</td>
             <td>${product.price}</td>

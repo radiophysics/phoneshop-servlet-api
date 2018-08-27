@@ -33,6 +33,7 @@
     <servlet-name>productDetailsPage</servlet-name>
     <url-pattern>/products/*</url-pattern>
   </servlet-mapping>
+
   <error-page>
     <location>/WEB-INF/pages/404.jsp</location>
   </error-page>

@@ -13,7 +13,14 @@ public class ProductListPageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("products", ArrayListProductDao.getInstance().findProducts());
-        request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
+        ProductDao productDao;
+        productDao = ArrayListProductDao.getInstance();
+
+        try {
+            request.setAttribute("products", productDao.findProducts());
+            request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
+        } catch (IllegalArgumentException e){
+            response.setStatus(500);
+        }
     }
 }
