@@ -1,6 +1,7 @@
 package com.es.phoneshop.web;
 
 import com.es.phoneshop.model.ArrayListProductDao;
+import com.es.phoneshop.model.Product;
 import com.es.phoneshop.model.ProductDao;
 
 import javax.servlet.ServletException;
@@ -16,16 +17,18 @@ public class ProductDetailsPageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
-            request.setAttribute("product", productDao.getProduct(Long.valueOf(idString(request))));
+            request.setAttribute("product", getId(request));
             request.getRequestDispatcher("/WEB-INF/pages/product.jsp").forward(request, response);
+        } catch (NumberFormatException e){
+            response.setStatus(500);
         } catch (IllegalArgumentException e){
             response.setStatus(404);
         }
     }
 
-    private String idString(HttpServletRequest request){
+    private Product getId(HttpServletRequest request){
         String uri = request.getRequestURI();
         int index = uri.lastIndexOf("/");
-        return uri.substring(index + 1);
+        return productDao.getProduct(Long.valueOf(uri.substring(index + 1)));
     }
 }

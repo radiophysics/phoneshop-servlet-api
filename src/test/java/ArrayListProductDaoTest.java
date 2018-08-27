@@ -14,44 +14,58 @@ public class ArrayListProductDaoTest {
     private ProductDao productDao = ArrayListProductDao.getInstance();
 
     @Test
-    public void GetInstance() {
-        productDao.save(new Product(1L, "a001", "first (null) product",
-                new BigDecimal("1.00"), Currency.getInstance(Locale.US), 0));
+    public void getInstance() {
         Long productId = 1L;
+        productDao.save(new Product(productId, "a001", "first (null) product",
+                new BigDecimal("1.00"), Currency.getInstance(Locale.US), 0));
+
         Product product = productDao.getProduct(productId);
+
         assertEquals(productId, product.getId());
     }
 
     @Test
-    public void Save() {
-        productDao.save(new Product(1L, "a001", "first (null) product",
-                new BigDecimal("1.00"), Currency.getInstance(Locale.US), 0));
+    public void save() {
         long productId = 1L;
-        assertNotNull(productDao.getProduct(productId));
+        productDao.save(new Product(productId, "a001", "first (null) product",
+                new BigDecimal("1.00"), Currency.getInstance(Locale.US), 0));
+
+        Product product = productDao.getProduct(productId);
+
+        assertNotNull(product.getId());
     }
 
     @Test
-    public void GetProduct() {
-        productDao.save(new Product(2L, "a002", "second product",
-                new BigDecimal("6.95"), Currency.getInstance(Locale.US), 100));
+    public void getProduct() {
         long productId = 2L;
-        assertNotNull(productDao.getProduct(productId));
+        productDao.save(new Product(productId, "a002", "second product",
+                new BigDecimal("6.95"), Currency.getInstance(Locale.US), 100));
+
+        Product product = productDao.getProduct(productId);
+
+        assertNotNull(product.getId());
     }
 
     @Test
-    public void FindProducts() {
-        assertTrue(productDao.findProducts().isEmpty());
-        productDao.save(new Product(2L, "a002", "second product",
+    public void findProducts() {
+        int sizeBefore = productDao.findProducts().size();
+        productDao.save(new Product(3L, "a003", "third product",
                 new BigDecimal("6.95"), Currency.getInstance(Locale.US), 100));
-        assertFalse(productDao.findProducts().isEmpty());
+
+        int sizeAfter = productDao.findProducts().size();
+
+        assertEquals(sizeAfter, (sizeBefore + 1));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void Remove() {
-        productDao.save(new Product(1L, "a001", "first (null) product",
-                new BigDecimal("1.00"), Currency.getInstance(Locale.US), 0));
+    public void remove() {
         long productId = 1L;
+        productDao.save(new Product(productId, "a001", "first (null) product",
+                new BigDecimal("1.00"), Currency.getInstance(Locale.US), 0));
         productDao.remove(productId);
-        assertNull(productDao.getProduct(productId));
+
+        Product product = productDao.getProduct(productId);
+
+        assertNull(product.getId());
     }
 }
