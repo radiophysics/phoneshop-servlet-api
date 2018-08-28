@@ -30,9 +30,9 @@ public class ArrayListProductDao implements ProductDao {
 
     public synchronized Product getProduct(long id) {
         return products.stream()
-                .filter((p) -> p.getId().equals(id)).findFirst()
+                .filter((p) -> p.getId().equals(id))
+                .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("No products with such id."));
-
     }
 
     public synchronized List<Product> findProducts() {
