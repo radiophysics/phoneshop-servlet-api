@@ -2,6 +2,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <jsp:useBean id="product" type="com.es.phoneshop.model.Product" scope="request"/>
+
+<html>
+<head>
+    <title>${product}</title>
+</head>
+<body>
+<jsp:include page="/WEB-INF/pages/header.jsp"/>
 <table>
     <thead>
     <tr>
@@ -30,3 +37,6 @@
     </tr>
     </thead>
 </table>
+<jsp:include page="/WEB-INF/pages/footer.jsp"/>
+</body>
+</html>
