@@ -20,6 +20,7 @@
         <td>Description</td>
         <td>Price</td>
         <td>Currency</td>
+        <td>Quantity</td>
     </tr>
     </thead>
     <c:forEach var="cartItem" items="${cart.cartItems}">
@@ -33,6 +34,7 @@
             <td>${cartItem.product.description}</td>
             <td>${cartItem.product.price}</td>
             <td>${cartItem.product.currency}</td>
+            <td>${cartItem.quantity}</td>
         </tr>
     </c:forEach>
 </table>

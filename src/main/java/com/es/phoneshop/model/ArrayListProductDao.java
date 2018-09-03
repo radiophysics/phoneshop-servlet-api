@@ -25,6 +25,7 @@ public class ArrayListProductDao implements ProductDao {
     }
 
     public synchronized void save(Product product) {
+        products.remove(product);
         products.add(product);
     }
 
