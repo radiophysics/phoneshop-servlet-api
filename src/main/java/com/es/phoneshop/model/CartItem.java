@@ -1,5 +1,7 @@
 package com.es.phoneshop.model;
 
+import java.util.Objects;
+
 public class CartItem {
     private Product product;
     private int quantity;
@@ -23,5 +25,18 @@ public class CartItem {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o==null || getClass() !=o.getClass()) return false;
+        CartItem cartItem = (CartItem) o;
+        return Objects.equals(product, cartItem.product);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(product, quantity);
     }
 }

@@ -12,8 +12,12 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/pages/header.jsp"/>
-<table>
-    <thead>
+<div>
+    <c:if test="${not empty addedQuantity}">
+        Added ${addedQuantity} successfully.
+    </c:if>
+<form method="post" action="<c:url value="/products"/>${product.id} ">
+    <table>
     <tr>
         <td>Id</td>
         <td>${product.id}</td>
@@ -38,8 +42,23 @@
         <td>Stock</td>
         <td>${product.stock}</td>
     </tr>
-    </thead>
+    <tr>
+        <td>
+            <input type="text" name="quantity" id="quantity" value="${empty param.quantity ? 1 : param.quantity}"
+                   style="text-align: right">
+            <c:if test="${error}">
+                <label for="quantity" style="colore: red; display: block">
+                        ${error}
+                </label>
+            </c:if>
+        </td>
+        <td>
+            <input type="submit" value="Add to cart">
+        </td>
+    </tr>
 </table>
+</form>
+</div>
 <jsp:include page="/WEB-INF/pages/footer.jsp"/>
 </body>
 </html>

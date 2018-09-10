@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 public class CartService {
     private static final String CART_ATTRIBUTE_NAME = "cart";
     private static volatile CartService instance;
+    private ProductDao productDao = ArrayListProductDao.getInstance();
 
     private CartService(){}
 
@@ -25,7 +26,7 @@ public class CartService {
         Cart cart = (Cart) session.getAttribute(CART_ATTRIBUTE_NAME);
         if (cart == null){
             cart = new Cart();
-            for (Product product : ArrayListProductDao.getInstance().findProducts()){
+            for (Product product : productDao.findProducts()){
                 add(cart, product, 1);
             }
             session.setAttribute(CART_ATTRIBUTE_NAME, cart);
@@ -33,7 +34,7 @@ public class CartService {
         return cart;
     }
 
-    public synchronized void add(Cart cart, Product product, int quantity){
+    public synchronized void add(Cart cart, Product product, Integer quantity){
         if (quantity <= product.getStock()) {
             cart.getCartItems().add(new CartItem(product, quantity));
         } else {
