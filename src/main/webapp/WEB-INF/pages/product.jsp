@@ -16,7 +16,7 @@
     <c:if test="${not empty param.addedQuantity}">
         Added ${param.addedQuantity} successfully.
     </c:if>
-<form method="post" action="<c:url value="/products"/>${product.id} ">
+<form method="post" action="<c:url value="/products/"/>${product.id} ">
     <table>
     <tr>
         <td>Id</td>
