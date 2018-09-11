@@ -27,7 +27,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
 
         Long productId = Long.valueOf(getId(request));
         Product product = productDao.getProduct(productId);
-        Integer quantity = null;
+        int quantity = 0;
         try {
             Locale locale = request.getLocale();
             quantity = DecimalFormat.getInstance(locale).parse(request.getParameter("quantity")).intValue();
@@ -46,7 +46,6 @@ public class ProductDetailsPageServlet extends HttpServlet {
     private void showProductPage(Product product, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
             request.setAttribute("product", product);
             request.getRequestDispatcher("/WEB-INF/pages/product.jsp").forward(request, response);
-
     }
 
     private String getId(HttpServletRequest request){

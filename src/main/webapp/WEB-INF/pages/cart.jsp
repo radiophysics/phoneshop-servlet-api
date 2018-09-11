@@ -31,8 +31,7 @@
         <tr>
             <td>${cartItem.product.id}</td>
             <td>
-                <c:url var="productUrl" value="/products/${cartItem.product.id}">
-                </c:url>
+                <c:url var="productUrl" value="/products/${cartItem.product.id}"/>
                 <a href="${productUrl}">${cartItem.product.code}</a>
             </td>
             <td>${cartItem.product.description}</td>

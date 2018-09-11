@@ -13,8 +13,8 @@
 <body>
 <jsp:include page="/WEB-INF/pages/header.jsp"/>
 <div>
-    <c:if test="${not empty addedQuantity}">
-        Added ${addedQuantity} successfully.
+    <c:if test="${not empty param.addedQuantity}">
+        Added ${param.addedQuantity} successfully.
     </c:if>
 <form method="post" action="<c:url value="/products"/>${product.id} ">
     <table>
@@ -46,9 +46,9 @@
         <td>
             <input type="text" name="quantity" id="quantity" value="${empty param.quantity ? 1 : param.quantity}"
                    style="text-align: right">
-            <c:if test="${error}">
+            <c:if test="${param.error}">
                 <label for="quantity" style="colore: red; display: block">
-                        ${error}
+                        ${param.error}
                 </label>
             </c:if>
         </td>

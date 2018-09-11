@@ -30,13 +30,14 @@ public class CartItem {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o==null || getClass() !=o.getClass()) return false;
+        if (!(o instanceof CartItem)) return false;
         CartItem cartItem = (CartItem) o;
-        return Objects.equals(product, cartItem.product);
+        return getQuantity() == cartItem.getQuantity() &&
+                Objects.equals(getProduct(), cartItem.getProduct());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(product, quantity);
+        return Objects.hash(getProduct(), getQuantity());
     }
 }

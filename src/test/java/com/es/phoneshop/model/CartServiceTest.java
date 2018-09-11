@@ -32,9 +32,11 @@ public class CartServiceTest {
         HttpSession sessionMock = Mockito.mock(HttpSession.class);
 
         Mockito.when(requestMock.getSession()).thenReturn(sessionMock);
-        Mockito.when(sessionMock.getAttribute("cart")).thenReturn(requestMock);
+        Mockito.when(sessionMock.getAttribute("cart")).thenReturn(cart);
+        cartService.add(cart, product, quantity);
 
-        Mockito.verify(requestMock.getSession(), Mockito.times(1));
+        assertEquals(cart, cartService.getCart(requestMock));
+        Mockito.verify(requestMock).getSession();
     }
 
     @Test
