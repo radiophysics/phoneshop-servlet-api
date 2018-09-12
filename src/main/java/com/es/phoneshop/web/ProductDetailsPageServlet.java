@@ -23,27 +23,36 @@ public class ProductDetailsPageServlet extends HttpServlet {
         showProductPage(product, request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
         Long productId = Long.valueOf(getId(request));
         Product product = productDao.getProduct(productId);
-        int quantity = 0;
+        int quantity;
+        Locale locale = request.getLocale();
+        Cart cart = cartService.getCart(request);
+
         try {
-            Locale locale = request.getLocale();
             quantity = DecimalFormat.getInstance(locale).parse(request.getParameter("quantity")).intValue();
+            cartService.add(cart, product, quantity);
         } catch (ParseException e){
-            request.setAttribute("error", "Not a number");
+            request.setAttribute("error.number.format", 1);
             showProductPage(product, request, response);
+            return;
+        } catch (IllegalArgumentException e){
+            request.setAttribute("error.quantity.stock", 1);
+            showProductPage(product, request, response);
+            return;
         }
 
-        Cart cart = cartService.getCart(request);
-        cartService.add(cart, product, quantity);
+        request.getSession().setAttribute("success", 1);
 
-        response.sendRedirect(request.getContextPath()+request.getServletPath() +"/"+productId
-                + "?addedQuantity="+quantity);
+        response.sendRedirect(request.getRequestURI() + "?addedQuantity="+quantity);
     }
 
-    private void showProductPage(Product product, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    private void showProductPage(Product product, HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException{
             request.setAttribute("product", product);
             request.getRequestDispatcher("/WEB-INF/pages/product.jsp").forward(request, response);
     }

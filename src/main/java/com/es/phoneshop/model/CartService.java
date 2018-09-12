@@ -2,6 +2,7 @@ package com.es.phoneshop.model;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 public class CartService {
     private static final String CART_ATTRIBUTE_NAME = "cart";
@@ -32,18 +33,20 @@ public class CartService {
     }
 
     public synchronized void add(Cart cart, Product product, Integer quantity) {
-        for (CartItem cartItem : cart.getCartItems()) {
-            if (cartItem.getProduct().equals(product)) {
-                if (quantity <= (product.getStock() - cartItem.getQuantity())) {
-                    cartItem.setQuantity(cartItem.getQuantity() + quantity);
-                    return;
-                }
+
+        Optional<CartItem> existingItem = cart.getCartItems().stream()
+                .filter(ci -> ci.getProduct().equals(product))
+                .findAny();
+
+        if (!existingItem.isPresent()){
+            if (product.getStock() >= quantity){
+                cart.getCartItems().add(new CartItem(product, quantity));
+                return;
             }
         }
-        if (quantity <= product.getStock()) {
-            cart.getCartItems().add(new CartItem(product, quantity));
-        } else {
-            throw new IllegalArgumentException("Not enough products in stock.");
-        }
+
+        existingItem
+                .filter(ci -> ci.getQuantity() + quantity <= product.getStock())
+                .ifPresent(ci -> ci.setQuantity(ci.getQuantity() + quantity));
     }
 }
