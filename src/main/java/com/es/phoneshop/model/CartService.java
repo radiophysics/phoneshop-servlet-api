@@ -34,19 +34,17 @@ public class CartService {
 
     public synchronized void add(Cart cart, Product product, Integer quantity) {
 
-        Optional<CartItem> existingItem = cart.getCartItems().stream()
-                .filter(ci -> ci.getProduct().equals(product))
-                .findAny();
-
-        if (!existingItem.isPresent()){
-            if (product.getStock() >= quantity){
-                cart.getCartItems().add(new CartItem(product, quantity));
-                return;
+        for (CartItem cartItem : cart.getCartItems()){
+            if (cartItem.getProduct().equals(product)){
+                if (cartItem.getQuantity()+quantity<=product.getStock()){
+                    cartItem.setQuantity(cartItem.getQuantity()+quantity);
+                    return;
+                } else {
+                    throw new IllegalArgumentException();
+                }
             }
         }
 
-        existingItem
-                .filter(ci -> ci.getQuantity() + quantity <= product.getStock())
-                .ifPresent(ci -> ci.setQuantity(ci.getQuantity() + quantity));
+        cart.getCartItems().add(new CartItem(product, quantity));
     }
 }

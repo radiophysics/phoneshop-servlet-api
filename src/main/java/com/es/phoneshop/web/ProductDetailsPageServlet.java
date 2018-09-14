@@ -17,7 +17,8 @@ public class ProductDetailsPageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Long productId = Long.valueOf(getId(request));
+
+        long productId = Long.valueOf(getId(request));
         Product product = productDao.getProduct(productId);
 
         showProductPage(product, request, response);
@@ -37,17 +38,17 @@ public class ProductDetailsPageServlet extends HttpServlet {
             quantity = DecimalFormat.getInstance(locale).parse(request.getParameter("quantity")).intValue();
             cartService.add(cart, product, quantity);
         } catch (ParseException e){
-            request.setAttribute("error.number.format", 1);
+            request.setAttribute("errorNumberFormat", true);
             showProductPage(product, request, response);
             return;
         } catch (IllegalArgumentException e){
-            request.setAttribute("error.quantity.stock", 1);
+            request.setAttribute("errorQuantityStock", true);
             showProductPage(product, request, response);
             return;
         }
 
-        request.getSession().setAttribute("success", 1);
-
+        request.setAttribute("addedQuantity", quantity);
+        //showProductPage(product, request, response);
         response.sendRedirect(request.getRequestURI() + "?addedQuantity="+quantity);
     }
 

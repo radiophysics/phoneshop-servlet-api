@@ -3,9 +3,7 @@
 
 <p>
     <c:url var="productUrl" value="/products"/>
-    <a href="${productUrl}">Expert Soft</a>
-</p>
-<p>
+    <a href="${productUrl}" style="text-align: left">Expert Soft</a>
     <c:url var="productUrl" value="/cart"/>
-    <a href="${productUrl}">Cart Page</a>
+    <a href="${productUrl}" style="text-align: right">Cart Page</a>
 </p>
