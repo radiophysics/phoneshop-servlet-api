@@ -1,7 +1,4 @@
-import com.es.phoneshop.model.ArrayListProductDao;
-import com.es.phoneshop.model.Product;
-import com.es.phoneshop.model.ProductDao;
-
+package com.es.phoneshop.model;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -59,9 +56,7 @@ public class ArrayListProductDaoTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void remove() {
-        long productId = 1L;
-        productDao.save(new Product(productId, "a001", "first (null) product",
-                new BigDecimal("1.00"), Currency.getInstance(Locale.US), 0));
+        long productId = 3L;
         productDao.remove(productId);
 
         Product product = productDao.getProduct(productId);

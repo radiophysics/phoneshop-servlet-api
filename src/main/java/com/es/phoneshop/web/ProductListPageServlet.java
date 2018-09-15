@@ -10,16 +10,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class ProductListPageServlet extends HttpServlet {
-    private ProductDao productDao = ArrayListProductDao.getInstance();
+
+    private ProductDao productDao;
+
+    public void init() throws ServletException{
+        super.init();
+        productDao = ArrayListProductDao.getInstance();
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        try {
-            request.setAttribute("products", productDao.findProducts());
-            request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
-        } catch (IllegalArgumentException e){
-            response.setStatus(500);
-        }
+        request.setAttribute("products", productDao.findProducts());
+        request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
     }
 }
