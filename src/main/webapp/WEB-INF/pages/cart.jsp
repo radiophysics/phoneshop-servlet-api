@@ -6,14 +6,13 @@
 
 <html>
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <link href="<c:url value="/resources/css/style.css" />" rel="stylesheet">
     <title>Cart</title>
 </head>
 <body>
 <jsp:include page="/WEB-INF/pages/header.jsp"/>
-<p>
-    Hello from cart!
+<p class="title_p">
+    Cart
 </p>
 <table>
     <thead>
@@ -34,7 +33,8 @@
                 <a href="${productUrl}">${cartItem.product.code}</a>
             </td>
             <td>${cartItem.product.description}</td>
-            <td><fmt:formatNumber value="${cartItem.product.price}"/>${cartItem.product.currency}</td>
+            <td><fmt:formatNumber value="${cartItem.product.price}"/></td>
+            <td>${cartItem.product.currency}</td>
             <td><fmt:formatNumber value="${cartItem.quantity}"/></td>
         </tr>
     </c:forEach>

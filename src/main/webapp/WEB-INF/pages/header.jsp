@@ -1,9 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<p>
+<nav class="custom_navigation">
     <c:url var="productUrl" value="/products"/>
-    <a href="${productUrl}" style="text-align: left">Expert Soft</a>
+    <a class="nav_button" href="${productUrl}" style="text-align: left">Phoneshop</a>
     <c:url var="productUrl" value="/cart"/>
-    <a href="${productUrl}" style="text-align: right">Cart Page</a>
-</p>
+    <a class="cart_button" href="${productUrl}" style="text-align: right">Cart</a>
+</nav>

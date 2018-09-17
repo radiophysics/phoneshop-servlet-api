@@ -20,14 +20,14 @@ public class SampleDataServletContextListener implements ServletContextListener 
         if (!Boolean.valueOf(insertSampleDataString))
             return;
 
-        productDao.save(new Product(1L, "a000", "first (null) product",
-                null, Currency.getInstance(Locale.US), 0));
-        productDao.save(new Product(2L, "a002", "second product",
-                new BigDecimal("6.95"), Currency.getInstance(Locale.US), 100));
-        productDao.save(new Product(3L, "a003", "third product",
-                new BigDecimal("4.50"), Currency.getInstance(Locale.US), 7));
-        productDao.save(new Product(4L, "a004", "fourth product",
-                new BigDecimal("9.99"), Currency.getInstance(Locale.US), 54));
+        productDao.save(new Product(1L, "A001", "Nokia 3310",
+                new BigDecimal("110.00"), Currency.getInstance(Locale.US), 1000));
+        productDao.save(new Product(2L, "B113", "Motorola E398",
+                new BigDecimal("319.95"), Currency.getInstance(Locale.US), 120));
+        productDao.save(new Product(3L, "B119", "Sony Ericsson K750i",
+                new BigDecimal("250.00"), Currency.getInstance(Locale.US), 260));
+        productDao.save(new Product(4L, "A999", "iPhone XL",
+                new BigDecimal("5.95"), Currency.getInstance(Locale.US), 5));
     }
 
     @Override

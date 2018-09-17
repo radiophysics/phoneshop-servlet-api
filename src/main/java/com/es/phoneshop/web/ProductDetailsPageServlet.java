@@ -48,7 +48,6 @@ public class ProductDetailsPageServlet extends HttpServlet {
         }
 
         request.setAttribute("addedQuantity", quantity);
-        //showProductPage(product, request, response);
         response.sendRedirect(request.getRequestURI() + "?addedQuantity="+quantity);
     }
 
