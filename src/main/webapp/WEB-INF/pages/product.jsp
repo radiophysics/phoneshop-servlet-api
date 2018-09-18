@@ -59,6 +59,11 @@
                         <fmt:message key="errorQuantityStock"/>
                     </label>
                 </c:if>
+                <c:if test="${errorNegativeNumber}">
+                    <label for="quantity" style="color: red; display: block">
+                        <fmt:message key="errorNegativeNumber"/>
+                    </label>
+                </c:if>
             </td>
             <td>
                 <input type="submit" value="Add to cart">

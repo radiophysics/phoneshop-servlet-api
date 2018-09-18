@@ -36,28 +36,35 @@ public class ProductDetailsPageServlet extends HttpServlet {
 
         try {
             quantity = DecimalFormat.getInstance(locale).parse(request.getParameter("quantity")).intValue();
+            if (quantity < 0) {
+                throw new NumberFormatException();
+            }
             cartService.add(cart, product, quantity);
-        } catch (ParseException e){
+        } catch (ParseException e) {
             request.setAttribute("errorNumberFormat", true);
             showProductPage(product, request, response);
             return;
-        } catch (IllegalArgumentException e){
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorNegativeNumber", true);
+            showProductPage(product, request, response);
+            return;
+        } catch (IllegalArgumentException e) {
             request.setAttribute("errorQuantityStock", true);
             showProductPage(product, request, response);
             return;
         }
 
         request.setAttribute("addedQuantity", quantity);
-        response.sendRedirect(request.getRequestURI() + "?addedQuantity="+quantity);
+        response.sendRedirect(request.getRequestURI() + "?addedQuantity=" + quantity);
     }
 
     private void showProductPage(Product product, HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException{
-            request.setAttribute("product", product);
-            request.getRequestDispatcher("/WEB-INF/pages/product.jsp").forward(request, response);
+            throws ServletException, IOException {
+        request.setAttribute("product", product);
+        request.getRequestDispatcher("/WEB-INF/pages/product.jsp").forward(request, response);
     }
 
-    private String getId(HttpServletRequest request){
+    private String getId(HttpServletRequest request) {
         String uri = request.getRequestURI();
         int index = uri.lastIndexOf("/");
         return uri.substring(index + 1);
