@@ -31,46 +31,40 @@ public class CartPageServlet extends HttpServlet{
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Long productId = Long.valueOf(getId(request));
-        Product product = productDao.getProduct(productId);
-        int quantity;
-        Locale locale = request.getLocale();
-        Cart cart = cartService.getCart(request);
-
-        try {
-            quantity = DecimalFormat.getInstance(locale).parse(request.getParameter("quantity")).intValue();
-            if (quantity < 0) {
-                throw new NumberFormatException();
+        String[] productIds = request.getParameterValues("productId");
+        String[] quantities = request.getParameterValues("quantity");
+        String[] errors = new String[productIds.length];
+        boolean hasErrors = false;
+        Product product;
+        for (int i = 0; i < productIds.length; i++) {
+            product = productDao.getProduct(Long.valueOf(productIds[i]));
+            Locale locale = request.getLocale();
+            try {
+                int quantity = DecimalFormat.getInstance(locale).parse(quantities[i]).intValue();
+                if (quantity < 0)
+                    throw new NumberFormatException();
+                if (quantity > product.getStock())
+                    throw new IllegalArgumentException();
+                cartService.update(cartService.getCart(request), product, quantity);
+                request.setAttribute("update", true);
+            }catch (ParseException e) {
+                errors[i] = "errorNumberFormat";
+                hasErrors = true;
+            }catch (NumberFormatException e) {
+                errors[i] = "errorNegativeNumber";
+                hasErrors = true;
+            }catch (IllegalArgumentException e) {
+                errors[i] = "errorQuantityStock";
+                hasErrors = true;
             }
-            cartService.add(cart, product, quantity);
-        } catch (ParseException e) {
-            request.setAttribute("errorNumberFormat", true);
-            showCartPage(cart, request, response);
-            return;
-        } catch (NumberFormatException e) {
-            request.setAttribute("errorNegativeNumber", true);
-            showCartPage(cart, request, response);
-            return;
-        } catch (IllegalArgumentException e) {
-            request.setAttribute("errorQuantityStock", true);
-            showCartPage(cart, request, response);
-            return;
         }
-
-        request.setAttribute("update", true);
-        request.setAttribute("updatedQuantity", quantity);
-        response.sendRedirect(request.getRequestURI() + "?updatedQuantity=" + quantity);
-    }
-
-    private String getId(HttpServletRequest request) {
-        String uri = request.getRequestURI();
-        int index = uri.lastIndexOf("/");
-        return uri.substring(index + 1);
-    }
-
-    private void showCartPage(Cart cart, HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.setAttribute("cart", cart);
-        request.getRequestDispatcher("/WEB-INF/pages/product.jsp").forward(request, response);
+        if(hasErrors) {
+            request.setAttribute("errors", errors);
+            request.setAttribute("quantities", quantities);
+            doGet(request, response);
+        }
+        else {
+            response.sendRedirect("cart?updated");
+        }
     }
 }

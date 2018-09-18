@@ -15,6 +15,12 @@
     Cart
 </p>
 <form method="post">
+    <c:if test="${not empty updatedQuantity}">
+        <fmt:message key="update"/>
+    </c:if>
+    <c:if test="${not empty deleted}">
+        <fmt:message key="deleted"/>
+    </c:if>
     <table>
         <thead>
         <tr>
@@ -37,31 +43,17 @@
                 <td><fmt:formatNumber value="${cartItem.product.price}"/></td>
                 <td>${cartItem.product.currency}</td>
                 <td>
-                    <input type="text" name="quantity" id="quantity"
-                           value="${quantity}"
-                           style="text-align: right">
-                    <c:if test="${not empty param.updatedQuantity}">
-                    <label for="quantity" style="color: limegreen; display: block">
-                        <fmt:message key="update"/>
-                    </label>
+                    <input type="hidden" name="productId" value="${cartItem.product.id}">
+                    <input name="quantity" id="quantity${status.index}"
+                           value="${quantities[status.index] != null ? quantities[status.index] : cartItem.quantity}">
+                    <c:if test="${not empty errors[status.index]}">
+                        <label for="quantity${status.index}" style="color: red; display: block">
+                                ${errors[status.index]}
+                        </label>
                     </c:if>
-                    <c:if test="${errorNumberFormat}">
-                    <label for="quantity" style="color: red; display: block">
-                        <fmt:message key="errorNumberFormat"/>
-                    </label>
-                    </c:if>
-                    <c:if test="${errorQuantityStock}">
-                    <label for="quantity" style="color: red; display: block">
-                        <fmt:message key="errorQuantityStock"/>
-                    </label>
-                    </c:if>
-                    <c:if test="${errorNegativeNumber}">
-                    <label for="quantity" style="color: red; display: block">
-                        <fmt:message key="errorNegativeNumber"/>
-                    </label>
-                    </c:if>
+                </td>
                 <td>
-                    <input type="submit" name="delete" value="X"/>
+                    <button type="submit" value="${status.index}">Delete</button>
                 </td>
             </tr>
         </c:forEach>

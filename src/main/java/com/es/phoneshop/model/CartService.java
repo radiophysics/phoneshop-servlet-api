@@ -46,6 +46,17 @@ public class CartService {
         cart.getCartItems().add(new CartItem(product, quantity));
     }
 
+    public synchronized void update(Cart cart, Product product, Integer quantity){
+        for (CartItem cartItem : cart.getCartItems()) {
+            if (cartItem.getProduct().equals(product)) {
+                if (cartItem.getQuantity() + quantity <= product.getStock()) {
+                    cartItem.setQuantity(quantity);
+                    return;
+                }
+            }
+        }
+    }
+
     public synchronized void delete(Cart cart, Product product){
         for (CartItem cartItem : cart.getCartItems()){
             if (cartItem.getProduct().equals(product)){
