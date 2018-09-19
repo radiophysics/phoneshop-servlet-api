@@ -33,38 +33,46 @@ public class CartPageServlet extends HttpServlet{
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String[] productIds = request.getParameterValues("productId");
         String[] quantities = request.getParameterValues("quantity");
-        String[] errors = new String[productIds.length];
-        boolean hasErrors = false;
+        String deleteValue = request.getParameter("delete");
+        Locale locale = request.getLocale();
         Product product;
-        for (int i = 0; i < productIds.length; i++) {
-            product = productDao.getProduct(Long.valueOf(productIds[i]));
-            Locale locale = request.getLocale();
-            try {
-                int quantity = DecimalFormat.getInstance(locale).parse(quantities[i]).intValue();
-                if (quantity < 0)
-                    throw new NumberFormatException();
-                if (quantity > product.getStock())
-                    throw new IllegalArgumentException();
-                cartService.update(cartService.getCart(request), product, quantity);
-                request.setAttribute("update", true);
-            }catch (ParseException e) {
-                errors[i] = "errorNumberFormat";
-                hasErrors = true;
-            }catch (NumberFormatException e) {
-                errors[i] = "errorNegativeNumber";
-                hasErrors = true;
-            }catch (IllegalArgumentException e) {
-                errors[i] = "errorQuantityStock";
-                hasErrors = true;
+        Cart cart = cartService.getCart(request);
+        if (deleteValue != null) {
+            int deletedProductId = Integer.valueOf(deleteValue);
+            cartService.delete(cart, deletedProductId);
+            request.getSession().setAttribute("delete", true);
+            response.sendRedirect(request.getRequestURI() + "?deleted");
+        } else {
+            for (int i = 0; i < productIds.length; i++) {
+                product = productDao.getProduct(Long.valueOf(productIds[i]));
+                try {
+                    int quantity = DecimalFormat.getInstance(locale).parse(quantities[i]).intValue();
+                    if (quantity < 0)
+                        throw new NumberFormatException();
+                    if (quantity > product.getStock())
+                        throw new IllegalArgumentException();
+                    cartService.update(cartService.getCart(request), product, quantity);
+                    request.getSession().setAttribute("update", true);
+                    response.sendRedirect(request.getRequestURI() + "?updated");
+                } catch (ParseException e) {
+                    request.getSession().setAttribute("errorNumberFormat",true);
+                    showCartPage(cart, request, response);
+                    return;
+                } catch (NumberFormatException e) {
+                    request.getSession().setAttribute("errorNegativeNumber",true);
+                    showCartPage(cart, request, response);
+                    return;
+                } catch (IllegalArgumentException e) {
+                    request.getSession().setAttribute("errorQuantityStock",true);
+                    showCartPage(cart, request, response);
+                    return;
+                }
             }
         }
-        if(hasErrors) {
-            request.setAttribute("errors", errors);
-            request.setAttribute("quantities", quantities);
-            doGet(request, response);
-        }
-        else {
-            response.sendRedirect("cart?updated");
-        }
+    }
+
+    private void showCartPage(Cart cart, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getSession().setAttribute("cart", cart);
+        request.getRequestDispatcher("/WEB-INF/pages/cart.jsp").forward(request, response);
     }
 }

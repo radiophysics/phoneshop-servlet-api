@@ -4,7 +4,6 @@
 
 <jsp:useBean id="product" type="com.es.phoneshop.model.Product" scope="request"/>
 <fmt:setBundle basename="i18n.messages"/>
-<fmt:setLocale value="en"/>
 
 <html>
 <head>
@@ -50,10 +49,10 @@
                     </label>
                 </c:if>
                 <c:if test="${errorNumberFormat}">
-                    <label for="quantity" style="color: red; display: block">
-                        <fmt:message key="errorNumberFormat"/>
-                    </label>
-                </c:if>
+                <label for="quantity" style="color: red; display: block">
+                    <fmt:message key="errorNumberFormat"/>
+                </label>
+            </c:if>
                 <c:if test="${errorQuantityStock}">
                     <label for="quantity" style="color: red; display: block">
                         <fmt:message key="errorQuantityStock"/>

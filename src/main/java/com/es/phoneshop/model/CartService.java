@@ -2,6 +2,7 @@ package com.es.phoneshop.model;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Optional;
 
 public class CartService {
@@ -33,10 +34,10 @@ public class CartService {
     }
 
     public synchronized void add(Cart cart, Product product, Integer quantity) {
-        for (CartItem cartItem : cart.getCartItems()){
-            if (cartItem.getProduct().equals(product)){
-                if (cartItem.getQuantity()+quantity<=product.getStock()){
-                    cartItem.setQuantity(cartItem.getQuantity()+quantity);
+        for (CartItem cartItem : cart.getCartItems()) {
+            if (cartItem.getProduct().equals(product)) {
+                if (cartItem.getQuantity() + quantity <= product.getStock()) {
+                    cartItem.setQuantity(cartItem.getQuantity() + quantity);
                     return;
                 } else {
                     throw new IllegalArgumentException();
@@ -46,23 +47,21 @@ public class CartService {
         cart.getCartItems().add(new CartItem(product, quantity));
     }
 
-    public synchronized void update(Cart cart, Product product, Integer quantity){
+    public synchronized void update(Cart cart, Product product, Integer quantity) {
         for (CartItem cartItem : cart.getCartItems()) {
             if (cartItem.getProduct().equals(product)) {
-                if (cartItem.getQuantity() + quantity <= product.getStock()) {
+                if (quantity <= product.getStock()) {
                     cartItem.setQuantity(quantity);
                     return;
+                } else {
+                    throw new IllegalArgumentException();
                 }
             }
         }
     }
 
-    public synchronized void delete(Cart cart, Product product){
-        for (CartItem cartItem : cart.getCartItems()){
-            if (cartItem.getProduct().equals(product)){
-                cart.getCartItems().remove(cartItem);
-                return;
-            }
-        }
+    public synchronized void delete(Cart cart, int i) {
+        List<CartItem> cartItems = cart.getCartItems();
+        cartItems.remove(i);
     }
 }
