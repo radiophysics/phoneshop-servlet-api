@@ -5,14 +5,13 @@
 
 <html>
 <head>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+  <link href="<c:url value="/resources/css/style.css" />" rel="stylesheet">
   <title>Product List</title>
 </head>
 <body>
 <jsp:include page="/WEB-INF/pages/header.jsp"/>
-<p>
-  Hello from product list!
+<p class="title_p">
+  Product list
 </p>
 <table>
   <thead>
@@ -26,7 +25,7 @@
     </tr>
   </thead>
   <c:forEach var="product" items="${products}">
-    <tr>
+    <tr class="items">
       <td>${product.id}</td>
       <td>
         <c:url var="productUrl" value="/products/${product.id}"/>

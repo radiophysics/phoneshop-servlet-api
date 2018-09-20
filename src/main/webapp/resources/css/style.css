@@ -1,0 +1,115 @@
+body{
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    font-family: Arial;
+    position:relative;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 50px;
+    min-height: 80vh;
+}
+
+.custom_navigation {
+    width: 100%;
+    min-height: 50px;
+    background: #b3e5fc;
+    position: fixed;
+    top: 0;
+    -webkit-box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.75);
+}
+
+.nav_button{
+    display: inline-block;
+    width: 200px;
+    font-size: 20px;
+    height: 50px;
+    color:whitesmoke;
+    font-weight: bold;
+    text-decoration: none;
+    line-height: 50px;
+    margin:0 25px;
+    text-align: center !important;
+    border-bottom: 5px solid rgba(0,0,0,0);
+    float: left;
+}
+
+.nav_button:hover{
+    transition-duration: 0.7s;
+    border-bottom: 5px solid orangered;
+}
+
+.title_p{
+    font-size: 25px;
+    color:darkslategray;
+    font-weight: 500;
+}
+
+.cart_button{
+    float: right;
+    display: inline-block;
+    width: 100px;
+    height: 40px;
+    margin:5px 25px;
+    text-decoration: none;
+    background: palegoldenrod;
+    border-radius: 10px;
+    text-align: center !important;
+    line-height: 40px;
+    font-size: 20px;
+    font-weight: bold;
+    color:goldenrod;
+    -webkit-box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.75);
+}
+
+.cart_button:hover{
+    transition-duration: 0.7s;
+    color:gainsboro;
+    background: goldenrod;
+}
+
+footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: darkturquoise;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+table {
+    width: 80%;
+    min-width: 600px;
+    white-space: nowrap;
+    text-align: center;
+}
+thead {
+    padding: 15px 5px;
+    background: darkblue;
+    height: 50px;
+    color: gainsboro;
+}
+thead td {
+
+    padding: 15px 5px;
+    width: 100px;
+    text-align: center;
+}
+.items{
+    min-height: 40px;
+    background: #b3e5fc;
+}
+.items td{
+    padding: 10px;
+}
+
+.product{
+    width: 80%;
+}
