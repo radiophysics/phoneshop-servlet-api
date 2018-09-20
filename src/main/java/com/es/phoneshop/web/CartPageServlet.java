@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class CartPageServlet extends HttpServlet{
     private CartService cartService;
@@ -34,45 +35,56 @@ public class CartPageServlet extends HttpServlet{
         String[] productIds = request.getParameterValues("productId");
         String[] quantities = request.getParameterValues("quantity");
         String deleteValue = request.getParameter("delete");
+        String[] errors = new String[productIds.length];
+        boolean hasErrors = false;
         Locale locale = request.getLocale();
+        ResourceBundle res = ResourceBundle.getBundle("messages", locale);
         Product product;
         Cart cart = cartService.getCart(request);
         if (deleteValue != null) {
             int deletedProductId = Integer.valueOf(deleteValue);
             cartService.delete(cart, deletedProductId);
-            request.getSession().setAttribute("delete", true);
-            response.sendRedirect(request.getRequestURI() + "?deleted");
+            request.setAttribute("success", true);
+            request.setAttribute("successMsg", res.getString("delete"));
+            response.sendRedirect(request.getRequestURI());
         } else {
             for (int i = 0; i < productIds.length; i++) {
                 product = productDao.getProduct(Long.valueOf(productIds[i]));
                 try {
                     int quantity = DecimalFormat.getInstance(locale).parse(quantities[i]).intValue();
-                    if (quantity < 0)
+                    if (quantity < 0) {
                         throw new NumberFormatException();
-                    if (quantity > product.getStock())
+                    }
+                    if (quantity > product.getStock()) {
                         throw new IllegalArgumentException();
+                    }
                     cartService.update(cartService.getCart(request), product, quantity);
-                    request.getSession().setAttribute("update", true);
-                    response.sendRedirect(request.getRequestURI() + "?updated");
+                    request.setAttribute("success", true);
+                    request.setAttribute("successMsg", res.getString("update"));
                 } catch (ParseException e) {
-                    request.getSession().setAttribute("errorNumberFormat",true);
-                    showCartPage(cart, request, response);
-                    return;
+                    errors[i] = res.getString("errorNumberFormat");
+                    hasErrors=true;
                 } catch (NumberFormatException e) {
-                    request.getSession().setAttribute("errorNegativeNumber",true);
-                    showCartPage(cart, request, response);
-                    return;
+                    errors[i] = res.getString("errorNegativeNumber");
+                    hasErrors = true;
                 } catch (IllegalArgumentException e) {
-                    request.getSession().setAttribute("errorQuantityStock",true);
-                    showCartPage(cart, request, response);
-                    return;
+                    errors[i] = res.getString("errorQuantityStock");
+                    hasErrors = true;
                 }
+            }
+            if (hasErrors){
+                request.setAttribute("quantities", quantities);
+                request.setAttribute("error", true);
+                request.setAttribute("errors", errors);
+                showCartPage(cart, request, response);
+            } else {
+                response.sendRedirect(request.getRequestURI() + "?updated");
             }
         }
     }
 
     private void showCartPage(Cart cart, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getSession().setAttribute("cart", cart);
+        request.setAttribute("cart", cart);
         request.getRequestDispatcher("/WEB-INF/pages/cart.jsp").forward(request, response);
     }
 }

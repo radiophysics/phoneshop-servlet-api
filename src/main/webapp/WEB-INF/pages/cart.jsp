@@ -16,11 +16,8 @@
     Cart
 </p>
 <form method="post" action="<c:url value="/cart"/> " class="cart">
-    <c:if test="${update}">
-        <fmt:message key="update"/>
-    </c:if>
-    <c:if test="${delete}">
-        <fmt:message key="delete"/>
+    <c:if test="${success}">
+        ${successMsg}
     </c:if>
     <table>
         <thead>
@@ -47,20 +44,8 @@
                     <input type="hidden" name="productId" value="${cartItem.product.id}">
                     <input type="text" id="quantity${status.index}" name="quantity"
                            value="${quantities[status.index] != null ? quantities[status.index] : cartItem.quantity}">
-                    <c:if test="${errorNumberFormat}">
-                        <label for="quantity${status.index}" style="color: red; display: block">
-                            <fmt:message key="errorNumberFormat"/>
-                        </label>
-                    </c:if>
-                    <c:if test="${errorQuantityStock}">
-                        <label for="quantity${status.index}" style="color: red; display: block">
-                            <fmt:message key="errorQuantityStock"/>
-                        </label>
-                    </c:if>
-                    <c:if test="${errorNegativeNumber}">
-                        <label for="quantity${status.index}" style="color: red; display: block">
-                            <fmt:message key="errorNegativeNumber"/>
-                        </label>
+                    <c:if test="${not empty errors && not empty errors[status.index]}">
+                        <label for="quantity${status.index}">${errors[status.index]}</label>
                     </c:if>
                 </td>
                 <td>
