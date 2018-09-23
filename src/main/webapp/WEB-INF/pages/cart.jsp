@@ -54,9 +54,7 @@
             </tr>
         </c:forEach>
     </table>
-    <c:if test="not empty quantities">
-        <input type="submit" value="Update">
-    </c:if>
+<input type="submit" value="Update">
 </form>
 <jsp:include page="/WEB-INF/pages/footer.jsp"/>
 </body>
