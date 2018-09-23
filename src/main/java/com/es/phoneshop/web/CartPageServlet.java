@@ -38,7 +38,7 @@ public class CartPageServlet extends HttpServlet{
         String[] errors = new String[productIds.length];
         boolean hasErrors = false;
         Locale locale = request.getLocale();
-        ResourceBundle res = ResourceBundle.getBundle("messages", locale);
+        ResourceBundle res = ResourceBundle.getBundle("i18n.messages", locale);
         Product product;
         Cart cart = cartService.getCart(request);
         if (deleteValue != null) {

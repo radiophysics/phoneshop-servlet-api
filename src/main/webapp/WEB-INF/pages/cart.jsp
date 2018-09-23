@@ -16,7 +16,7 @@
     Cart
 </p>
 <form method="post" action="<c:url value="/cart"/> " class="cart">
-    <c:if test="${success}">
+    <c:if test="${not empty success}">
         ${successMsg}
     </c:if>
     <table>
@@ -54,7 +54,9 @@
             </tr>
         </c:forEach>
     </table>
-    <input type="submit" value="Update">
+    <c:if test="not empty quantities">
+        <input type="submit" value="Update">
+    </c:if>
 </form>
 <jsp:include page="/WEB-INF/pages/footer.jsp"/>
 </body>
