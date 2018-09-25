@@ -44,15 +44,15 @@
 <form method="post">
     <p>
         <label for="name">Name</label>
-        <input name="name" id="name">
+        <input name="Name" id="name">
     </p>
     <p>
         <label for="phone">Phone</label>
-        <input name="phone" id="phone">
+        <input name="Phone" id="phone">
     </p>
     <p>
         <label for="address">Address</label>
-        <input name="address" id="address">
+        <input name="Address" id="address">
     </p>
     <input value="Make order" type="submit">
 </form>
