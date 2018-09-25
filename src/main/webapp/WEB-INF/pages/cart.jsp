@@ -54,7 +54,10 @@
             </tr>
         </c:forEach>
     </table>
-<input type="submit" value="Update">
+    <input type="submit" value="Update">
+</form>
+<form action="<c:url value="/checkout"/>">
+    <button>Place order</button>
 </form>
 <jsp:include page="/WEB-INF/pages/footer.jsp"/>
 </body>
