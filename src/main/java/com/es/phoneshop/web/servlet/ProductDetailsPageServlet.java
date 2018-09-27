@@ -9,11 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class ProductDetailsPageServlet extends HttpServlet {
     private ProductDao productDao = ArrayListProductDao.getInstance();
     private CartService cartService = CartService.getInstance();
+    private ArrayList<Product> comparisonList = new ArrayList<>();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -22,6 +24,14 @@ public class ProductDetailsPageServlet extends HttpServlet {
         Product product = productDao.getProduct(productId);
 
         showProductPage(product, request, response);
+    }
+
+    public ArrayList<Product> getComparisonList() {
+        return comparisonList;
+    }
+
+    public void setComparisonList(ArrayList<Product> comparisonList) {
+        this.comparisonList = comparisonList;
     }
 
     @Override
@@ -33,6 +43,10 @@ public class ProductDetailsPageServlet extends HttpServlet {
         int quantity;
         Locale locale = request.getLocale();
         Cart cart = cartService.getCart(request);
+
+        if (request.getParameter("compare")!=null){
+            comparisonList.add(product);
+        }
 
         try {
             quantity = DecimalFormat.getInstance(locale).parse(request.getParameter("quantity")).intValue();
