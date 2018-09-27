@@ -70,6 +70,7 @@
         </tr>
     </table>
 </form>
+<input type="submit" name="compare" value="Compare">
 <jsp:include page="/WEB-INF/pages/footer.jsp"/>
 </body>
 </html>

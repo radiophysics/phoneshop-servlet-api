@@ -38,6 +38,12 @@
     </tr>
   </c:forEach>
 </table>
+<form method="post" action="<c:url value="/products"/> " class="product">
+  <input type="text" name="sort" value="${sort}">
+  <input type="submit" name="search" value="Search">
+</form>
+<c:url var="productUrl" value="/comparison"/>
+<a class="button" href="${productUrl}" style="text-align: left">Comparison</a>
 <jsp:include page="/WEB-INF/pages/footer.jsp"/>
 </body>
 </html>
